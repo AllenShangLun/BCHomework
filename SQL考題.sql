@@ -1,90 +1,90 @@
 USE [Northwind]
 
-----1 ¦C¥X¦U²£«~ªº¨ÑÀ³°Ó¦WºÙ
---SELECT ProductID,ProductName,P.SupplierID,CompanyName
---FROM Products P
---INNER JOIN Suppliers S ON S.SupplierID=P.SupplierID
+--1 åˆ—å‡ºå„ç”¢å“çš„ä¾›æ‡‰å•†åç¨±
+SELECT ProductID,ProductName,P.SupplierID,CompanyName
+FROM Products P
+INNER JOIN Suppliers S ON S.SupplierID=P.SupplierID
 
-----2 ¦C¥X¦U²£«~ªººØÃş¦WºÙ
---SELECT ProductID,ProductName,P.CategoryID,C.CategoryName
---FROM Products P
---INNER JOIN Categories C ON C.CategoryID=P.CategoryID
+--2 åˆ—å‡ºå„ç”¢å“çš„ç¨®é¡åç¨±
+SELECT ProductID,ProductName,P.CategoryID,C.CategoryName
+FROM Products P
+INNER JOIN Categories C ON C.CategoryID=P.CategoryID
 
-----3 ¦C¥X¦U­q³æªºÅU«È¦W¦r
---SELECT OrderID,O.CustomerID,C.CompanyName
---FROM Orders O
---INNER JOIN Customers C ON C.CustomerID=O.CustomerID
+--3 åˆ—å‡ºå„è¨‚å–®çš„é¡§å®¢åå­—
+SELECT OrderID,O.CustomerID,C.CompanyName
+FROM Orders O
+INNER JOIN Customers C ON C.CustomerID=O.CustomerID
 
-----4 ¦C¥X¦U­q³æªº©Ò­t³dªºª«¬y°Ó¦W¦r¥H¤Î­û¤u¦W¦r
---SELECT O.OrderID, O.ShipVia,S.CompanyName,O.EmployeeID,E.LastName +' '+E.FirstName AS EmployeeName
---FROM Orders O
---INNER JOIN Employees E ON E.EmployeeID=O.EmployeeID
---INNER JOIN Shippers S ON S.ShipperID=O.ShipVia
+--4 åˆ—å‡ºå„è¨‚å–®çš„æ‰€è² è²¬çš„ç‰©æµå•†åå­—ä»¥åŠå“¡å·¥åå­—
+SELECT O.OrderID, O.ShipVia,S.CompanyName,O.EmployeeID,E.LastName +' '+E.FirstName AS EmployeeName
+FROM Orders O
+INNER JOIN Employees E ON E.EmployeeID=O.EmployeeID
+INNER JOIN Shippers S ON S.ShipperID=O.ShipVia
 
-----5 ¦C¥X1998¦~ªº­q³æ
---SELECT * FROM Orders WHERE YEAR(OrderDate)=1998
+--5 åˆ—å‡º1998å¹´çš„è¨‚å–®
+SELECT * FROM Orders WHERE YEAR(OrderDate)=1998
 
-----6 ¦U²£«~¡AUnitsInStock < UnitsOnOrder Åã¥Ü'¨Ñ¤£À³¨D'¡A§_«hÅã¥Ü'¥¿±`'
---SELECT ProductID,ProductName,UnitsInStock,UnitsOnOrder,
---CASE WHEN UnitsInStock < UnitsOnOrder THEN '¨Ñ¤£À³¨D' ELSE '¥¿±`' END AS A
---FROM Products
+--6 å„ç”¢å“ï¼ŒUnitsInStock < UnitsOnOrder é¡¯ç¤º'ä¾›ä¸æ‡‰æ±‚'ï¼Œå¦å‰‡é¡¯ç¤º'æ­£å¸¸'
+SELECT ProductID,ProductName,UnitsInStock,UnitsOnOrder,
+CASE WHEN UnitsInStock < UnitsOnOrder THEN 'ä¾›ä¸æ‡‰æ±‚' ELSE 'æ­£å¸¸' END AS A
+FROM Products
 
-----7 ¨ú±o­q³æ¤é´Á³Ì·sªº9µ§­q³æ
---SELECT TOP 9 * FROM Orders
---ORDER BY OrderDate DESC,OrderID DESC
+--7 å–å¾—è¨‚å–®æ—¥æœŸæœ€æ–°çš„9ç­†è¨‚å–®
+SELECT TOP 9 * FROM Orders
+ORDER BY OrderDate DESC,OrderID DESC
 
-----8 ²£«~³æ»ù³Ì«K©yªº²Ä4~8¦W
---SELECT* FROM (
---	SELECT TOP 8 * 
---	FROM Products
---	ORDER BY UnitPrice
---	) A
---WHERE ProductID NOT IN (
---	SELECT TOP 4 ProductID
---	FROM Products
---	ORDER BY UnitPrice
---	)
-----19, 3, 24, 68, 13, 75, 52, 1
+--8 ç”¢å“å–®åƒ¹æœ€ä¾¿å®œçš„ç¬¬4~8å
+SELECT* FROM (
+	SELECT TOP 8 * 
+	FROM Products
+	ORDER BY UnitPrice
+	) A
+WHERE ProductID NOT IN (
+	SELECT TOP 4 ProductID
+	FROM Products
+	ORDER BY UnitPrice
+	)
+--19, 3, 24, 68, 13, 75, 52, 1
 
-----9 ¦C¥X¨CºØÃş§O¤¤³Ì°ª³æ»ùªº°Ó«~
---SELECT ProductID,CategoryID,UnitPrice FROM Products P1
---WHERE UnitPrice =(
---	SELECT MAX(UnitPrice) FROM Products P2
---	WHERE P2.CategoryID=P1.CategoryID
---)
+--9 åˆ—å‡ºæ¯ç¨®é¡åˆ¥ä¸­æœ€é«˜å–®åƒ¹çš„å•†å“
+SELECT ProductID,CategoryID,UnitPrice FROM Products P1
+WHERE UnitPrice =(
+	SELECT MAX(UnitPrice) FROM Products P2
+	WHERE P2.CategoryID=P1.CategoryID
+)
 --CategoryID:ProductID
 --1:38, 2:5, 3:62
 
-----10 ¦C¥X¨C­Ó­q³æªºÁ`ª÷ÃB
---SELECT OrderID,SUM(Quantity*UnitPrice*(1-Discount)) AS TtotalAmount
---FROM [Order Details] D
---GROUP BY OrderID
+--10 åˆ—å‡ºæ¯å€‹è¨‚å–®çš„ç¸½é‡‘é¡
+SELECT OrderID,SUM(Quantity*UnitPrice*(1-Discount)) AS TtotalAmount
+FROM [Order Details] D
+GROUP BY OrderID
 
-----11 ¦C¥X¨C­Óª«¬y°Ó°e¹Lªº­q³æµ§¼Æ
---SELECT ShipVia,COUNT(*),S.CompanyName FROM Orders O
---INNER JOIN Shippers S ON S.ShipperID=O.ShipVia
---GROUP BY ShipVia,S.CompanyName
+--11 åˆ—å‡ºæ¯å€‹ç‰©æµå•†é€éçš„è¨‚å–®ç­†æ•¸
+SELECT ShipVia,COUNT(*),S.CompanyName FROM Orders O
+INNER JOIN Shippers S ON S.ShipperID=O.ShipVia
+GROUP BY ShipVia,S.CompanyName
 
-----12 ¦C¥X³Q¤U­q¦¸¼Æ¤p©ó9¦¸ªº²£«~
---SELECT ProductID,COUNT(*) AS CountTotal
---FROM [Order Details]
---GROUP BY ProductID
---HAVING COUNT(*)<9
+--12 åˆ—å‡ºè¢«ä¸‹è¨‚æ¬¡æ•¸å°æ–¼9æ¬¡çš„ç”¢å“
+SELECT ProductID,COUNT(*) AS CountTotal
+FROM [Order Details]
+GROUP BY ProductID
+HAVING COUNT(*)<9
 
----- (13¡B14¡B15½Ğ¤@°_¼g)
-----13 ·s¼Wª«¬y°Ó(Shippers)¡G
--- ¤½¥q¦WºÙ: «C§ü¤H¤~¡A¹q¸Ü: (02)66057606
--- ¤½¥q¦WºÙ: «C¸s¬ì§Ş¡A¹q¸Ü: (02)14055374
---INSERT INTO Shippers
---	(CompanyName,Phone) VALUES
---	('«C§ü¤H¤~','(02)66057606'),
---	('«C¸s¬ì§Ş','(02)14055374')
+-- (13ã€14ã€15è«‹ä¸€èµ·å¯«)
+--13 æ–°å¢ç‰©æµå•†(Shippers)ï¼š
+ --å…¬å¸åç¨±: é’æ‰äººæ‰ï¼Œé›»è©±: (02)66057606
+ --å…¬å¸åç¨±: é’ç¾¤ç§‘æŠ€ï¼Œé›»è©±: (02)14055374
+INSERT INTO Shippers
+	(CompanyName,Phone) VALUES
+	('é’æ‰äººæ‰','(02)66057606'),
+	('é’ç¾¤ç§‘æŠ€','(02)14055374')
 
-----14 ¤è¤~·s¼Wªº¨âµ§¸ê®Æ¡A¹q¸Ü³£§ï¦¨(02)66057606¡A¤½¥q¦WºÙµ²§À¥['¦³­­¤½¥q'
---UPDATE Shippers SET Phone='(02)66057606', CompanyName=CompanyName+'¦³­­¤½¥q'
---WHERE ShipperID IN (1013,1014)
+--14 æ–¹æ‰æ–°å¢çš„å…©ç­†è³‡æ–™ï¼Œé›»è©±éƒ½æ”¹æˆ(02)66057606ï¼Œå…¬å¸åç¨±çµå°¾åŠ 'æœ‰é™å…¬å¸'
+UPDATE Shippers SET Phone='(02)66057606', CompanyName=CompanyName+'æœ‰é™å…¬å¸'
+WHERE ShipperID IN (1013,1014)
 
-----15 §R°£­è¤~¨âµ§¸ê®Æ
---DELETE FROM Shippers 
---WHERE ShipperID IN (1013,1014)
+--15 åˆªé™¤å‰›æ‰å…©ç­†è³‡æ–™
+DELETE FROM Shippers 
+WHERE ShipperID IN (1013,1014)
 
